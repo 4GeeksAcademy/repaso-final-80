@@ -17,6 +17,65 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			getUserInfo: async () => {
+				try {
+					const resp = await fetch('https://automatic-guacamole-xg5r7q46g6rf9qq4-3001.app.github.dev/api/user_info', {
+						headers: {
+							'Authorization': `Bearer ${localStorage.getItem('token')}`
+						}
+					})
+					if (!resp.ok) throw new Error('error fetching books')
+					const data = await resp.json()
+					setStore({user: data.payload})
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			login: async formData => {
+				try {
+					const resp = await fetch('https://automatic-guacamole-xg5r7q46g6rf9qq4-3001.app.github.dev/api/login', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(formData)
+					})
+					if (!resp.ok) throw new Error('error fetching books')
+					const data = await resp.json()
+					setStore({token: data.token})
+					localStorage.setItem('token', data.token)
+
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			register: async formData => {
+				try {
+					const resp = await fetch('https://automatic-guacamole-xg5r7q46g6rf9qq4-3001.app.github.dev/api/register', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(formData)
+					})
+					if (!resp.ok) throw new Error('error fetching books')
+					const data = await resp.json()
+					setStore({token: data.token})
+					localStorage.setItem('token', data.token)
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			getBooks: async () => {
+				try {
+					const resp = await fetch('https://automatic-guacamole-xg5r7q46g6rf9qq4-3001.app.github.dev/api/books')
+					if (!resp.ok) throw new Error('error fetching books')
+					const data = await resp.json()
+					setStore({books: data.payload})
+				} catch (error) {
+					console.log(error);
+				}
+			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
